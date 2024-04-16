@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Welcome{% endblock %}
+{% block content %}
+Welcome user {{ new_user.first_name }}.
+You can now log-in using this <a href="{% url "login" %}">
+    url
+</a>
+{% endblock %}

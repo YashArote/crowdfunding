@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+{% block css %}
+body {
+    display:flex; flex-direction:column; 
+    min-height:100vh;
+    background:
+url(https://source.unsplash.com/E8Ufcyxz514/2400x1823)
+center / cover no-repeat fixed;
+  }
+
+  .card {
+    max-width: 500px;
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  
+    
+    height: 300px;
+    padding: 35px;
+  
+    border: 1px solid rgba(255, 255, 255, .25) !important;
+    border-radius: 20px !important;
+    background-color: rgba(255, 255, 255, 0.45);
+    box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.25);
+  
+    backdrop-filter: blur(15px);
+  }
+  label {
+    color: black;
+  }
+  input {
+    color:black;
+  }
+ 
+{% endblock %}
+{% block content %}
+<script>
+
+    console.log("invi")
+    
+</script>
+{% if request.user.is_authenticated %}
+<p>Already a user,you can log out using this
+    <a href="{% url "logout" %}">url</a>
+</p>
+
+{% else %}
+<center>
+    <pre></pre>
+<h1>Register</h1>
+    <p>Use the form below to sign-up</p>
+<pre></pre>
+<div class="card" id="card1">
+    <form method="post" novalidate style="display: flex;flex-direction: column;justify-content: space-between !important;
+    height: 500px;
+    " enctype="multipart/form-data">
+        {{user_form.as_p}}
+        
+           <span>
+          {{ profile_form.as_p }}
+        
+        </span>
+        <span>
+        {{address_form.as_p}}
+       
+        <button type="button" class="btn btn-danger" id="addButton"
+        style="padding-top: 5px;">Get Address</button>
+        </span>
+       
+    {% csrf_token %}
+       <span style="margin-top: 17px;"><input type="submit" class="btn btn-danger" value="Create my account"></span>
+
+    </form>
+</div>
+</center>
+{% endif %}
+<script>
+  
+    var labels=document.getElementsByTagName("label");
+    var html="<span style='display: inline-block;width:30px;'></span>"
+    for (let i = 0; i < labels.length; i++) {
+        labels[i].insertAdjacentHTML("afterend",html);
+}
+    var element=document.getElementsByClassName("helptext");
+    element[0].style.display="none";
+    document.getElementById("addButton").addEventListener("click", async event => {
+        console.log("Donee")
+        var accounts;
+      if (window.ethereum) {
+      // instantiate Web3 with the injected provider
+      const web3 = new Web3(window.ethereum);
+
+      //request user to connect accounts (Metamask will prompt)
+      await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+      //get the connected accounts
+      accounts = await web3.eth.getAccounts();
+      console.log(accounts);
+      }
+                   document.getElementById("userAddress").disabled=false
+                   document.getElementById("userAddress").value=accounts[0];
+                 
+                   });
+console.log("DOnee")
+var lis=document.getElementsByTagName("li");
+var once=false;
+  for (let i=0;i<lis.length;i++){
+    if(lis[i].innerText.toString().includes("This field is required")||lis[i].innerText.includes("Email already in use")){
+    var card=document.getElementById("card1");
+    var currentMinHeight = parseInt(window.getComputedStyle(card).minHeight, 10);
+    console.log(currentMinHeight);
+    var newMinHeight = currentMinHeight + 25;
+    if(!once){
+      newMinHeight+=95;
+      once=true;
+    }
+    card.style.minHeight = newMinHeight + 'px';
+    }
+  }
+ 
+  
+   </script>
+{% endblock %}

@@ -1,0 +1,96 @@
+.create-form {
+  position: absolute;
+  left: 35px;
+  width:50% !important;
+}
+
+.form-group {
+  width: 30% !important;
+}
+.card-title {
+  color: rgba(0, 0, 0, 0.632) !important;
+}
+
+:root {
+  --gradient: linear-gradient(to left top, #DD2476 10%, #FF512F 90%) !important;
+}
+
+
+.card {
+  border: 1px solid rgb(255, 26, 26) !important;
+  color: rgba(250, 250, 250, 0.8);
+  margin-bottom: 2rem;
+}
+
+
+
+.navbar {
+  margin-bottom: 0;
+  border-radius: 0;
+}
+
+/* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+.row.content {
+  height: 450px
+}
+
+/* Set gray background color and 100% height */
+.sidenav {
+  padding-top: 20px;
+  background-color: #f1f1f1;
+  height: 100%;
+}
+
+/* Set black background color, white text and some padding */
+footer {
+  background-color: #555;
+  color: white;
+  padding: 15px;
+}
+.loading {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0,0,0,.5);
+}
+.loading-wheel {
+  width: 20px;
+  height: 20px;
+  margin-top: -40px;
+  margin-left: -40px;
+  
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  
+  border-width: 30px;
+  border-radius: 50%;
+  -webkit-animation: spin 1s linear infinite;
+}
+.style-2 .loading-wheel {
+  border-style: double;
+  border-color: #ccc transparent;
+}
+@-webkit-keyframes spin {
+  0% {
+      -webkit-transform: rotate(0);
+  }
+  100% {
+      -webkit-transform: rotate(-360deg);
+  }
+}
+/* On small screens, set height to 'auto' for sidenav and grid */
+@media screen and (max-width: 767px) {
+  .sidenav {
+    height: auto;
+    padding: 15px;
+  }
+
+  .row.content {
+    height: auto;
+  }
+}

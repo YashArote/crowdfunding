@@ -1,0 +1,447 @@
+{% load custom_tags %}
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="display:none;" id="ex">
+    Open modal
+</button>
+
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title" id="model-error">Success</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body" id="model-body1">
+                <h1>Donation Successful</h1>
+                <a id="modalBody1">Click to see more about the transaction</a>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="loading style-2" id="myDIV" style="z-index:1;display:none;">
+    <div class="loading-wheel" id="loading">
+    </div>
+</div>
+
+
+<div style="height: 30px;"></div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 flex w-full " style="margin-left: 50px;">
+    <div class="mx-auto flex-1 " style="width:600px;height: 400px;">
+        <div class="campaign-image relative" style="">
+            <img src="{{ image }}" alt="Campaign Image"
+                style="object-fit:cover;width: 600px;height:300px;border:2px solid #000000 !important;border-radius: 10px;
+                    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;">
+            <!-- Progress Indicator Bar -->
+            <div class="absolute bottom-0 left-0 w-full h-2 bg-gray-200">
+                <div class="absolute top-0 left-0 h-full bg-green-500" style="width: 75%;" id="progress"></div>
+                <!-- Adjust width dynamically -->
+            </div>
+        </div>
+    </div>
+    <div class="rounded-lg bg-blue-100 p-4 shadow-md flex flex-col justify-between middle-card"
+        style="width: 440px;position: relative;left: 70px;margin-left: 70px;border: 2px solid black;border-radius: 10px;height: 407px;
+            box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;">
+        <!-- Creator -->
+        <div class="mb-4">
+            <h3 class="font-bold mb-2">Creator</h3>
+            <p class="text-sm text-gray-600 mb-1">{{ creator }}</p>
+            <hr class="border-t" style="background-color: rgb(28, 27, 27);">
+        </div>
+        <!-- Title -->
+        <div class="mb-4">
+            <h3 class="font-bold mb-2">Title</h3>
+            <p class="text-sm text-gray-600 mb-1">{{ title }}</p>
+            <hr class="border-t" style="background-color: rgb(28, 27, 27);">
+        </div>
+        <!-- Description -->
+        <div>
+            <h3 class="font-bold mb-2" >Description</h3>
+            <p class="text-sm text-gray-600" style="overflow-y: scroll ;height: 75px;">{{ description }}</p>
+        </div>
+    </div>
+    <div class="flex flex-col gap-9  w-32 " style="position: relative;left: 80px;margin-left: 40px;">
+        <div id="days-left"
+            class="rounded-lg bg-blue-100 p-2 md:p-4 shadow-md flex flex-col justify-between card-width-150"
+            style="border: 2px solid black;border-radius: 10px;box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;">
+            <div>
+                <h3 class="text-lg font-bold mb-2 text-blue-700">{{ left }}</h3>
+                <div class="border-b border-black mb-2"></div> <!-- Thin black line -->
+                <p class="text-gray-800">Days left</p>
+            </div>
+        </div>
+        <div id="target-amount"
+            class="rounded-lg bg-blue-100 p-2 md:p-4 shadow-md flex flex-col justify-between card-width-150"
+            style="border: 2px solid black;border-radius: 10px;box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;">
+            <div>
+                <h3 class="text-lg font-bold mb-2 text-blue-700">{{ target }}</h3>
+                <div class="border-b border-black mb-2"></div> <!-- Thin black line -->
+                <p class="text-gray-800">Target Amount</p>
+            </div>
+        </div>
+        <div id="actual-amount"
+            class="rounded-lg bg-blue-100 p-2 md:p-4 shadow-md flex flex-col justify-between card-width-150"
+            style="border: 2px solid black;border-radius: 10px;box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;">
+            <div>
+                <h3 class="text-lg font-bold mb-2 text-blue-700">{{ collected }}</h3>
+                <div class="border-b border-black mb-2"></div> <!-- Thin black line -->
+                <p class="text-gray-800">Actual Amount Raised</p>
+            </div>
+        </div>
+    </div>
+    <!-- New Card -->
+    <div class="grid  md:grid-cols-2 gap-8 flex w-full">
+        <div class="donators-panel"
+            style="width: 330px !important; box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px; margin-bottom: 30px;">
+            <h2 class="panel-title">Recent Donators</h2>
+            <hr class="border-t" style="background-color: rgb(28, 27, 27);">
+            <ul class="donators-list" style="height: 120px;">
+                {% if donators %}
+                {% for donar in donators %}
+                <li>
+                    <span class="donator-name">{{ donar.0 }}</span>
+                    <span class="address-separator">-</span>
+                    <span class="wallet-address">{{ donar.1 }}</span>
+                </li>
+                {% endfor %}
+                {% else %}
+                <div class="alert alert-success mb-4" role="alert" style="font-size: 16px;">
+                    <hr style="margin: 5px 0;">
+                    <p style="font-size: 13px; color: grey;">No Donations yet. Be the first to donate
+                    </p>
+                </div>
+                {% endif %}
+                <!-- Add more li elements for additional donators -->
+            </ul>
+        </div>
+        <div style="width: 972px;display: flex;
+            justify-content: flex-end;">
+            <div class="rounded-lg bg-blue-100 p-4 shadow-md flex flex-col justify-between w-80" id="fund1" style=" margin-left: 50px;position: relative;left: 50px;width: 625px;border: 2px solid black;border-radius: 10px;
+                box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px; margin-bottom: 30px;">
+                <!-- Textarea -->
+
+                <textarea class="border border-gray-300 rounded-md p-2 mb-4" placeholder="ETH"
+                    pattern="^\d+(\.\d{1,2})?$" style="margin-top: 10px; margin-bottom: 10px;" id="amount"
+                    name="amount"></textarea>
+                <!-- Bootstrap Alert -->
+                <div class="alert alert-success mb-4" role="alert" style="font-size: 16px;">
+                    <strong>Back it because you believe in it</strong>
+                    <hr style="margin: 5px 0;">
+                    <p style="font-size: 13px; color: grey;">Support the project for no reward because it speaks to
+                        you
+                    </p>
+                </div>
+                <!-- Fund Button -->
+                <button class="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600" id="fund">Fund</button>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+  var progress=document.getElementById("progress");
+        var target=parseFloat("{{ collected }}");
+        var collected=parseFloat('{{ target }}');
+        var percent=((target/collected)*100).toString();
+        progress.style.width=percent+"%";
+        document.getElementById('fund').addEventListener('click', async function () {
+        var amountInput = document.getElementById('amount');
+        var value = amountInput.value;
+        var floatValue = parseFloat(value);
+
+        // Validation checks
+        if (value === '' || isNaN(floatValue) || floatValue < 0.1 || floatValue > 99.99) {
+            alert('Please enter a valid number between 0.1 and 99.99');
+            return;
+        }
+
+        // Validation passed, execute desired code
+        // For example, you can make an AJAX request here
+        console.log('Validation passed. Executing code...');
+        var x = document.getElementById("myDIV");
+        x.style.display = "block";
+        web3js = new Web3(web3.currentProvider);
+        var contractAddress = "0xe53b910Cc2fAf3a7aE6873783501DeD76bcb1B99"
+        abi = [
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_owner",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_title",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_description",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_target",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_deadlin",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_image",
+				"type": "string"
+			}
+		],
+		"name": "createCampaign",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
+		"name": "donateToCampaign",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "payable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": "false",
+		"inputs": [
+			{
+				"indexed": "true",
+				"internalType": "address",
+				"name": "donor",
+				"type": "address"
+			},
+			{
+				"indexed": "false",
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "Donation",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "campaigns",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "title",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "description",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "target",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "deadline",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amountCollected",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "image",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getCampaigns",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "title",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "description",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "target",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "deadline",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amountCollected",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "image",
+						"type": "string"
+					},
+					{
+						"internalType": "address[]",
+						"name": "donators",
+						"type": "address[]"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "donations",
+						"type": "uint256[]"
+					}
+				],
+				"internalType": "struct CrowdFunding.Campaign[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
+		"name": "getDonators",
+		"outputs": [
+			{
+				"internalType": "address[]",
+				"name": "",
+				"type": "address[]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "numberOfCampaigns",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
+        await window.ethereum.enable();
+        console.log(window.ethereum.isConnected());
+
+        const amountInWei = web3js.utils.toWei(document.getElementById("amount").value, 'ether');
+        //console.log(console.log(web3.utils.toWei("0.001", "ether")));
+        /*params: [
+         {
+           from: '{{ request.user.address.address }}',
+       
+           value: amountInWei.toString(), // 2441406250
+           data:'{{ id }}',
+         },
+       ];
+       
+       window.ethereum
+         .request({
+           method: 'eth_sendTransaction',
+           params,
+         })*/
+
+        var contract = new web3js.eth.Contract(abi, contractAddress);
+        contract.methods.donateToCampaign({{ id| js }})
+        .send({ gas: 200000, from: "{{ request.user.address.address }}", value: amountInWei }).on("transactionHash", (hash) => {
+            document.getElementById("loading").innerHTML = "";
+
+        }).on("error", function(error) {
+            document.getElementById("model-error").innerText = "Error"
+            document.getElementById("model-body1").querySelector('h1').innerText = ""
+            document.getElementById("modalBody1").innerText = "An error occured";
+            var x = document.getElementById("myDIV");
+            x.style.display = "none";
+            document.querySelector("#ex").click();
+        }).then(function(receipt) {
+            document.getElementById("modalBody1").setAttribute("href", `https://sepolia.etherscan.io/tx/${receipt.transactionHash}`);
+            var x = document.getElementById("myDIV");
+            x.style.display = "none";
+            document.querySelector("#ex").click();
+        });
+        
+        // Reset the form or perform any other action if needed
+        // amountInput.value = ''; // Reset the textarea value
+    
+    });
+
+</script>

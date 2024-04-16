@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Log-In{% endblock %}
+{% block css %}
+body {
+    display:flex; flex-direction:column; 
+    min-height:100vh;
+    background:
+url(https://source.unsplash.com/E8Ufcyxz514/2400x1823)
+center / cover no-repeat fixed;
+  }
+
+  .card {
+    max-width: 450px;
+    min-height: 240px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  
+    
+    height: 300px;
+    padding: 35px;
+  
+    border: 1px solid rgba(255, 255, 255, .25) !important;
+    border-radius: 20px !important;
+    background-color: rgba(255, 255, 255, 0.45);
+    box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.25);
+  
+    backdrop-filter: blur(15px);
+  }
+  label {
+    color: black;
+    margin-right:7px
+  }
+  input {
+    color:black;
+  }
+ 
+{% endblock %}
+{% block content %}
+<center>
+    <pre></pre>
+<h1>Log In</h1>
+
+</center>
+
+{% if form.errors %}
+<center>
+<p>
+    Username and password didnt match,
+    please try again
+</p>
+</center>
+
+{% else %}
+<center>
+<p>Please, use the following form to log in
+    If you don't have an account <a href="{% url "register" %}">
+        register here
+    </a>.
+</p>
+<pre></pre>
+</center>
+{% endif %}
+<center>
+<div class="card">
+<form method="post"  novalidate style="display: flex;flex-direction: column;justify-content: space-between !important;height: 100px !important;">
+    <pre></pre>
+    <pre></pre>
+    {{ form.as_p }}
+    {% csrf_token %}
+    <pre></pre>
+    <input type="hidden" name="next" value="{{ next }}">
+    <p> <input type="submit" value="Log In" class="btn btn-danger"></p>
+    
+</form>
+</div>
+</center>
+{% endblock %}

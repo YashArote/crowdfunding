@@ -1,0 +1,427 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load custom_tags %}
+{% block title %}Create Campaign{% endblock %}
+{% block content %}
+{{ form1.media }}
+
+<div style="height: 50px;">
+
+</div>
+<div class="create-form"><h1>Create Campaign</h1>
+<p>Use the following form to create the campaign </p>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="display:none;" id="ex">
+    Open modal
+  </button>
+
+  <!-- The Modal -->
+  <div class="modal" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Successfully submitted</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>     
+        <!-- Modal body -->
+        <div class="modal-body">
+        Please wait for the approval
+            <a id="modalBody1">Click to see more about the transaction</a>
+        </div>   
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+{% if data %}
+
+<div class="loading style-2" id="myDIV" >
+    <div class="loading-wheel" id="loading">
+    </div></div>
+    <script>
+		console.log("called inside")
+    web3js=new Web3(web3.currentProvider);
+    var contractAddress="0xe53b910Cc2fAf3a7aE6873783501DeD76bcb1B99"
+   abi = [
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_owner",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_title",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_description",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_target",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_deadlin",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_image",
+				"type": "string"
+			}
+		],
+		"name": "createCampaign",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
+		"name": "donateToCampaign",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "payable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": "false",
+		"inputs": [
+			{
+				"indexed": "true",
+				"internalType": "address",
+				"name": "donor",
+				"type": "address"
+			},
+			{
+				"indexed": "false",
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "Donation",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "campaigns",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "title",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "description",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "target",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "deadline",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amountCollected",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "image",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getCampaigns",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "title",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "description",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "target",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "deadline",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amountCollected",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "image",
+						"type": "string"
+					},
+					{
+						"internalType": "address[]",
+						"name": "donators",
+						"type": "address[]"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "donations",
+						"type": "uint256[]"
+					}
+				],
+				"internalType": "struct CrowdFunding.Campaign[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
+		"name": "getDonators",
+		"outputs": [
+			{
+				"internalType": "address[]",
+				"name": "",
+				"type": "address[]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "numberOfCampaigns",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
+
+    var contract=new web3js.eth.Contract(abi,contractAddress);
+    contract.methods.createCampaign("{{ data.owner }}","{{ data.title}}","{{ data.description }}",{{ data.target|js }},{{ date|js }},"{{ image }}")
+    .send({ from: "{{ data.owner }}" }).on("transactionHash",(hash)=>{
+        document.getElementById("loading").innerHTML="";
+
+    }).on("error",function(error){
+        document.getElementById("modalBody1").innerHTML="An error occured";
+        var x = document.getElementById("myDIV");
+        x.style.display = "none";
+        document.querySelector("#ex").click();
+    }).then(function(receipt){
+        document.getElementById("modalBody1").setAttribute("href",`https://sepolia.etherscan.io/tx/${receipt.transactionHash}`);
+        var x = document.getElementById("myDIV");
+        x.style.display = "none";
+        document.querySelector("#ex").click();
+    });
+	
+    </script>
+{% endif %}
+<script>
+	$(function () {
+
+/* SCRIPT TO OPEN THE MODAL WITH THE PREVIEW */
+$("#id_image").change(function () {
+    if (this.files && this.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      $("#image").attr("src", e.target.result);
+      $("#modalCrop").modal("show");
+    }
+    reader.readAsDataURL(this.files[0]);
+  }
+});
+
+/* SCRIPTS TO HANDLE THE CROPPER BOX */
+var $image = $("#image");
+var cropBoxData;
+var canvasData;
+$("#modalCrop").on("shown.bs.modal", function () {
+  $image.cropper({
+    viewMode: 1,
+    aspectRatio: 2/1,
+    minCropBoxWidth: 200,
+    minCropBoxHeight: 100,
+    ready: function () {
+      $image.cropper("setCanvasData", canvasData);
+      $image.cropper("setCropBoxData", cropBoxData);
+    }
+  });
+  $image.cropper("zoom", 0.7);
+}).on("hidden.bs.modal", function () {
+  cropBoxData = $image.cropper("getCropBoxData");
+  canvasData = $image.cropper("getCanvasData");
+  var cropData = $image.cropper("getData");
+  
+  $("#id_x").val(cropData["x"]);
+  $("#id_y").val(cropData["y"]);
+  $("#id_height").val(cropData["height"]);
+  console.log("inside called");
+  $("#id_width").val(cropData["width"]);
+  console.log(cropBoxData);
+  $image.cropper("destroy");
+});
+
+// Enable zoom in button
+$(".js-zoom-in").click(function () {
+  $image.cropper("zoom", 0.1);
+});
+
+// Enable zoom out button
+$(".js-zoom-out").click(function () {
+  $image.cropper("zoom", -0.1);
+});// ...
+
+/* SCRIPT TO COLLECT THE DATA AND POST TO THE SERVER */
+
+function prepare(event){
+	event.preventDefault();
+	$("#id_x").val(cropData["x"]);
+  $("#id_y").val(cropData["y"]);
+  $("#id_height").val(cropData["height"]);
+  console.log("inside called");
+  $("#id_width").val(cropData["width"]);
+  document.getElementById("campForm").requestSubmit();
+}
+
+$(".js-crop-and-upload").submit(function () {
+  
+  var cropData = $image.cropper("getData");
+  
+  $("#id_x").val(cropData["x"]);
+  $("#id_y").val(cropData["y"]);
+  $("#id_height").val(cropData["height"]);
+  console.log("inside called");
+  $("#id_width").val(cropData["width"]);
+  return true
+  
+
+});
+
+});
+</script>
+<form method="post" enctype="multipart/form-data" novalidate id="campForm" onsubmit="prepare()">
+    {{ form1|crispy }}
+    {{ form2.as_p }}
+    {% csrf_token %}
+    <p><input type="submit" value="create" class="btn btn-danger js-crop-and-upload" id="submit1"></p>
+</form>
+<div class="modal fade" id="modalCrop">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		  <h4 class="modal-title" style="margin-left: 5px;">Crop the photo</h4>
+		</div>
+		<div class="modal-body" style="width: 420px !important;">
+		  <img src="" id="image" style="max-width: 100%;">
+		</div>
+		<div class="modal-footer">
+		  <div class="btn-group pull-left" role="group">
+			<button type="button" class="btn btn-default js-zoom-in">
+			  <span class="glyphicon glyphicon-zoom-in"></span>
+			</button>
+			<button type="button" class="btn btn-default js-zoom-out">
+			  <span class="glyphicon glyphicon-zoom-out"></span>
+			</button>
+		  </div>
+		  <button type="button" class="btn btn-default" data-dismiss="modal">Okayy</button>
+		  <!-- <button type="button" class="btn btn-primary js-crop-and-upload">Crop and upload</button> -->
+		</div>
+	  </div>
+	</div>
+  </div>
+
+  <!-- CONTAINER TO DISPLAY THE CROPPED IMAGES -->
+  <div class="row" style="margin-top: 20px">
+    ...
+  </div>
+</div>
+<script>
+document.getElementById("id_title").addEventListener("click", async event => {
+document.getElementById("hidden1").value= "{{ request.user.address.address }}";
+})
+</script>
+{% endblock %}
+
+
