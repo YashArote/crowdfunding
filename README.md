@@ -1,7 +1,7 @@
 
 ## Prerequisites
 
-* Having python installed
+* Having python installed.
 * Having metamask extension installed in browser 
 
 ## Installation
