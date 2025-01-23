@@ -12,20 +12,11 @@ import pytz
 import base64
 
 def days_difference_from_unix_timestamp(unix_timestamp):
-    # Convert Unix timestamp to a datetime object in UTC timezone
     timestamp_datetime_utc = datetime.utcfromtimestamp(unix_timestamp)
-
-    # Convert UTC datetime to IST timezone
     ist_timezone = pytz.timezone('Asia/Kolkata')
     timestamp_datetime_ist = timestamp_datetime_utc.astimezone(ist_timezone)
-
-    # Get the current date in IST timezone
     current_datetime_ist = datetime.now(ist_timezone)
-
-    # Calculate the difference in days
     difference =  timestamp_datetime_ist - current_datetime_ist 
-
-    # Extract the difference in days
     difference_in_days = difference.days
 
     return difference_in_days
@@ -66,6 +57,7 @@ def allCampaigns(request):
     camp_approved=[]
     for camp in campaignData:
         for url in urls:
+
             if camp[6]==url:
                 #print(camp[6])
                 camp+=(urls.index(url),)
@@ -73,7 +65,9 @@ def allCampaigns(request):
                 camp_temp[5]=w3.from_wei(camp_temp[5],"ether")
                 days_left=days_difference_from_unix_timestamp(camp_temp[4])
                 camp_temp[4]=days_left
-                camp_approved.append(tuple(camp_temp))
+                if(days_left>0):
+                    camp_approved.append(tuple(camp_temp))
+                
     
     campaignData=camp_approved
     print(campaignData)
@@ -108,7 +102,7 @@ def createCampaign(request):
             image=image1
 
 # print(nonce)
-    print("yash",data)
+    print("data: ",data)
     return render(request=request,template_name="account/create.html",context={"form1":campaign,"form2":image,"submit":submit,"data":data,"image":imageUrl,"date":date})
 
 @login_required
@@ -213,7 +207,9 @@ def campaign_detail(request,id):
         title=camp[1]
         description=camp[2]
         target=camp[3]
+        print("COLLECT",camp[5])
         collected= w3.from_wei(camp[5],"ether")
+        print("collected :- ",collected)
         donators=camp[7]
         donators_1=[ (Address.objects.filter(address=i)[0].user.username,i) for i in donators ]
         return render(

@@ -237,5 +237,5 @@ abi = [
 	}
 ]
 SimpleStorage = w3.eth.contract(
-    address="0xe53b910Cc2fAf3a7aE6873783501DeD76bcb1B99", abi=abi
+    address="0xA3FE6662699785458D655007DE5dcf23F170cEfb", abi=abi
 )

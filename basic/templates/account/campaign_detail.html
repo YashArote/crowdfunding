@@ -159,8 +159,8 @@
         var floatValue = parseFloat(value);
 
         // Validation checks
-        if (value === '' || isNaN(floatValue) || floatValue < 0.1 || floatValue > 99.99) {
-            alert('Please enter a valid number between 0.1 and 99.99');
+        if (value === '' || isNaN(floatValue) || floatValue < 0.001 || floatValue > 99.99) {
+            alert('Please enter a valid number between 0.001 and 99.99');
             return;
         }
 
@@ -170,7 +170,7 @@
         var x = document.getElementById("myDIV");
         x.style.display = "block";
         web3js = new Web3(web3.currentProvider);
-        var contractAddress = "0xe53b910Cc2fAf3a7aE6873783501DeD76bcb1B99"
+        var contractAddress = "0xA3FE6662699785458D655007DE5dcf23F170cEfb"
         abi = [
 	{
 		"inputs": [
