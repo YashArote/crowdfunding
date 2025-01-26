@@ -11,6 +11,11 @@ abi = [
 	{
 		"inputs": [
 			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			},
+			{
 				"internalType": "address",
 				"name": "_owner",
 				"type": "address"
@@ -56,7 +61,7 @@ abi = [
 		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "_id",
+				"name": "_externalId",
 				"type": "uint256"
 			}
 		],
@@ -100,6 +105,11 @@ abi = [
 		"name": "campaigns",
 		"outputs": [
 			{
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
 				"internalType": "address",
 				"name": "owner",
 				"type": "address"
@@ -140,10 +150,15 @@ abi = [
 	},
 	{
 		"inputs": [],
-		"name": "getCampaigns",
+		"name": "getAllCampaigns",
 		"outputs": [
 			{
 				"components": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
 					{
 						"internalType": "address",
 						"name": "owner",
@@ -237,5 +252,5 @@ abi = [
 	}
 ]
 SimpleStorage = w3.eth.contract(
-    address="0xA3FE6662699785458D655007DE5dcf23F170cEfb", abi=abi
+    address="0xbcF369c4DbF54c41f6AE7D77Fdb32cc077C4Ab44", abi=abi
 )

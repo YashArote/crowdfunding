@@ -170,10 +170,15 @@
         var x = document.getElementById("myDIV");
         x.style.display = "block";
         web3js = new Web3(web3.currentProvider);
-        var contractAddress = "0xA3FE6662699785458D655007DE5dcf23F170cEfb"
+        var contractAddress = "0xbcF369c4DbF54c41f6AE7D77Fdb32cc077C4Ab44"
         abi = [
 	{
 		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			},
 			{
 				"internalType": "address",
 				"name": "_owner",
@@ -220,7 +225,7 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "_id",
+				"name": "_externalId",
 				"type": "uint256"
 			}
 		],
@@ -264,6 +269,11 @@
 		"name": "campaigns",
 		"outputs": [
 			{
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
 				"internalType": "address",
 				"name": "owner",
 				"type": "address"
@@ -304,10 +314,15 @@
 	},
 	{
 		"inputs": [],
-		"name": "getCampaigns",
+		"name": "getAllCampaigns",
 		"outputs": [
 			{
 				"components": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
 					{
 						"internalType": "address",
 						"name": "owner",
@@ -400,7 +415,8 @@
 		"type": "function"
 	}
 ]
-        await window.ethereum.enable();
+        //await window.ethereum.enable();
+		await window.ethereum.request({ method: 'eth_requestAccounts' });
         console.log(window.ethereum.isConnected());
 
         const amountInWei = web3js.utils.toWei(document.getElementById("amount").value, 'ether');

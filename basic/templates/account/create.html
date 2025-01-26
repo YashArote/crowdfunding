@@ -45,10 +45,15 @@
     <script>
 		console.log("called inside")
     web3js=new Web3(web3.currentProvider);
-    var contractAddress="0xA3FE6662699785458D655007DE5dcf23F170cEfb"
+    var contractAddress="0xbcF369c4DbF54c41f6AE7D77Fdb32cc077C4Ab44"
    abi = [
 	{
 		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			},
 			{
 				"internalType": "address",
 				"name": "_owner",
@@ -95,7 +100,7 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "_id",
+				"name": "_externalId",
 				"type": "uint256"
 			}
 		],
@@ -139,6 +144,11 @@
 		"name": "campaigns",
 		"outputs": [
 			{
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
 				"internalType": "address",
 				"name": "owner",
 				"type": "address"
@@ -179,10 +189,15 @@
 	},
 	{
 		"inputs": [],
-		"name": "getCampaigns",
+		"name": "getAllCampaigns",
 		"outputs": [
 			{
 				"components": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
 					{
 						"internalType": "address",
 						"name": "owner",
@@ -275,9 +290,8 @@
 		"type": "function"
 	}
 ]
-
     var contract=new web3js.eth.Contract(abi,contractAddress);
-    contract.methods.createCampaign("{{ data.owner }}","{{ data.title}}","{{ data.description }}",{{ data.target|js }},{{ date|js }},"{{ image }}")
+    contract.methods.createCampaign({{ data.id|js }},"{{ data.owner }}","{{ data.title}}","{{ data.description }}",{{ data.target|js }},{{ date|js }},"{{ image }}")
     .send({ from: "{{ data.owner }}" }).on("transactionHash",(hash)=>{
         document.getElementById("loading").innerHTML="";
 

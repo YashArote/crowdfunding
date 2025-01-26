@@ -27,18 +27,18 @@
     {% for campaign in campaigns %}
   <div class="nft" style="margin-top: 15px !important;">
     <div class='main'>
-      <img class='tokenImage' src="{{ campaign.6 }}" alt="NFT" style="object-fit: cover;" onclick="javascript:window.location.href='/campaigns/detail/{{ campaign.9 }}'"/>
+      <img class='tokenImage' src="{{ campaign.7 }}" alt="NFT" style="object-fit: cover;" onclick="javascript:window.location.href='/campaigns/detail/{{ campaign.10 }}'"/>
         <div style="height: 8px;"></div>
-      <h2 style="color: white !important;font-size: 22px;">{{ campaign.1 }}</h2>
-      <p class='description'>{{ campaign.2|truncatechars:75 }}</p>
+      <h2 style="color: white !important;font-size: 22px;">{{ campaign.2 }}</h2>
+      <p class='description'>{{ campaign.3|truncatechars:75 }}</p>
       <div class='tokenInfo'>
         <div class="price">
           <ins>◘</ins>
-          <p>{{ campaign.5 }} ETH</p>
+          <p>{{ campaign.6 }} ETH</p>
         </div>
         <div class="duration">
           <ins>◷</ins>
-          <p>{{ campaign.4 }} days left</p>
+          <p>{{ campaign.5 }} days left</p>
         </div>
       </div>
       <hr />
@@ -52,7 +52,7 @@
      
     </div>
     <p  class="description" style="word-wrap:break-word;font-size: small;">
-      {{ campaign.0 }}</p>
+      {{ campaign.1 }}</p>
   </div>
   </div>
   {% endfor %}

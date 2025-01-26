@@ -52,19 +52,19 @@ def allCampaigns(request):
     images=Image.objects.filter(id__in=approved)
     urls= [image.image.url for image in images ]
     #print(urls)
-    campaignData = SimpleStorage.functions.getCampaigns().call()
+    campaignData = SimpleStorage.functions.getAllCampaigns().call()
     print("up",campaignData)
     camp_approved=[]
     for camp in campaignData:
         for url in urls:
 
-            if camp[6]==url:
+            if camp[7]==url:
                 #print(camp[6])
                 camp+=(urls.index(url),)
                 camp_temp=list(camp)
-                camp_temp[5]=w3.from_wei(camp_temp[5],"ether")
-                days_left=days_difference_from_unix_timestamp(camp_temp[4])
-                camp_temp[4]=days_left
+                camp_temp[6]=w3.from_wei(camp_temp[6],"ether")
+                days_left=days_difference_from_unix_timestamp(camp_temp[5])
+                camp_temp[5]=days_left
                 if(days_left>0):
                     camp_approved.append(tuple(camp_temp))
                 
@@ -94,6 +94,7 @@ def createCampaign(request):
             imageUrl=savedImg.image.url
             date=campaign1.get_unix()
             Approve.objects.create(camp_id=savedImg.id)
+            data["id"]=savedImg.id
             submit=True
             print("inside called")
 
@@ -137,12 +138,12 @@ def approve(request):
     
     urls= [image.image.url for image in images ]
     #print(urls)
-    campaignData = SimpleStorage.functions.getCampaigns().call()
-    
+    campaignData = SimpleStorage.functions.getAllCampaigns().call()
+    print(campaignData)
     camp_unapproved=[]
     for camp in campaignData:
         for url in urls:
-            if camp[6]==url:
+            if camp[7]==url:
                 #print(camp[6])
 
                 camp_unapproved.append(camp)
@@ -159,19 +160,19 @@ def userCampaigns(request,address):
     images=Image.objects.filter(id__in=approved)
     urls= [image.image.url for image in images ]
     #print(urls)
-    campaignData = SimpleStorage.functions.getCampaigns().call()
+    campaignData = SimpleStorage.functions.getAllCampaigns().call()
     print(campaignData)
     print(str(address).upper)
     camp_approved=[]
     for camp in campaignData:
         for url in urls:
-            if camp[6]==url and str(camp[0]).upper()== str(address).upper():
+            if camp[7]==url and str(camp[0]).upper()== str(address).upper():
                 #print(camp[6])
                 camp+=(urls.index(url),)
                 camp_temp=list(camp)
-                camp_temp[5]=w3.from_wei(camp_temp[5],"ether")
-                days_left=days_difference_from_unix_timestamp(camp_temp[4])
-                camp_temp[4]=days_left
+                camp_temp[6]=w3.from_wei(camp_temp[6],"ether")
+                days_left=days_difference_from_unix_timestamp(camp_temp[5])
+                camp_temp[5]=days_left
                 camp_approved.append(tuple(camp_temp))
     campaignData=camp_approved
     return render(
@@ -185,36 +186,38 @@ def campaign_detail(request,id):
     if request.method=="GET":
        
         camp_id_1=id
+        smart_camp_id=0
     #  print(str(request.GET.get("image"))) 
         approved=Approve.objects.filter(approved=True,rejected=False).values_list("camp_id",flat=True)
         images=Image.objects.filter(id__in=approved)
         urls= [image.image.url for image in images ]
         #print(urls)
-        campaignData = SimpleStorage.functions.getCampaigns().call()
+        campaignData = SimpleStorage.functions.getAllCampaigns().call()
         
         camp=None
         for camp1 in campaignData:
             for url in urls:
-                if camp1[6]==url and camp1[6]==urls[id]:
+                if camp1[7]==url and camp1[7]==urls[id]:
+                    
                     #print(camp[6])
                     camp=camp1
                     break
         print(camp)
-        days_left=days_difference_from_unix_timestamp(camp[4])
-        
-        image=camp[6]
-        creator=camp[0]
-        title=camp[1]
-        description=camp[2]
-        target=camp[3]
-        print("COLLECT",camp[5])
-        collected= w3.from_wei(camp[5],"ether")
+        days_left=days_difference_from_unix_timestamp(camp[5])
+        smart_camp_id=camp[0]
+        image=camp[7]
+        creator=camp[1]
+        title=camp[2]
+        description=camp[3]
+        target=camp[4]
+        print("COLLECT",camp[6])
+        collected= w3.from_wei(camp[6],"ether")
         print("collected :- ",collected)
-        donators=camp[7]
+        donators=camp[8]
         donators_1=[ (Address.objects.filter(address=i)[0].user.username,i) for i in donators ]
         return render(
         request, "account/campaigns.html", context={"detail":"yes","left":days_left,"creator":creator,"title":title,"description":description,"target":target,
-                                                    "collected":collected,"donators":donators_1,"image":image,"id":camp_id_1}
+                                                    "collected":collected,"donators":donators_1,"image":image,"id":smart_camp_id}
     )
 
 
