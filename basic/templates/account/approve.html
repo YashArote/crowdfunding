@@ -4,6 +4,7 @@
 {% if request.user.is_superuser %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,10 +12,11 @@
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
-    body{
+    body {
 
-      background-color:#ddd !important;
+      background-color: #ddd !important;
     }
+
     .card {
       border: none;
       border-radius: 10px;
@@ -50,7 +52,7 @@
 
     .card-description {
       max-height: 80px;
-      
+
       transition: max-height 0.3s ease-out;
       margin-bottom: 15px;
     }
@@ -74,94 +76,99 @@
     }
   </style>
 </head>
-<body>
-{% if campaigns|length == 0 %}
-<h1 style="height: 100%;width: 100%;align-content: center;">Nothing to approve</h1>
 
-{% endif %}
-{% if approved %}
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
+<body>
+  {% if campaigns|length == 0 %}
+  <h1 style="height: 100%;width: 100%;align-content: center;">Nothing to approve</h1>
+
+  {% endif %}
+  {% if approved %}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
     <strong>Approved Successfully</strong>
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-{% endif %}
-{% if rejected %}
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  {% endif %}
+  {% if rejected %}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
     <strong>rejected Successfully</strong>
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-{% endif %}
-{% for camp in campaigns %}
-<div class="container mt-5" style="margin-bottom: 30px">
-  <div class="card" style="background-color: #dde1e5;">
-    <div class="row no-gutters">
-        
-      <div class="col-md-4" style="margin-top: 10px;">
-        <img src="{{ camp.7 }}" class="card-img" alt="Image" style="height: 200px;width: 400px;;object-fit: cover;">
-      </div>
-        
-      <div class="col-md-8">
-        <div class="card-body">
-          <h5 class="card-title" style="color: black !important;">{{ camp.2 }}</h5>
-          <p class="card-text" style="color: black !important;">By: {{ camp.1 }}</p>
-          <p class="card-text" style="color: black !important;">Target: {{ camp.4 }}</p>
-          <p class="card-text" style="color: black !important;">Raised: {{ camp.6 }}</p>
-         <div class="container">
-          <p class="card-description" style="color: black !important;">
-            {{ camp.3|slice:":30" }} 
-           
-          </p>
-        <div class="collapse" id="{{ camp.2 }}" style="color: black;">
-            {{ camp.3|slice:"30:" }}
-    </div>
-          <button class="btn btn-info" data-toggle="collapse" data-target="#{{ camp.2 }}" type="button">View More</button>
-         </div>
-          <form method="post">
-            {% csrf_token %}
-            <input id="camp_img" name="camp_img" type="hidden" value="{{ camp.7 }}">
-          <button class="btn btn-success btn-approve float-right" style="border:none;margin-left: 20px;margin-bottom: 20px;" type="submit">Approve</button>
-          </form>
-          <form method="post">
-            {% csrf_token %}
-            <input id="camp_img" name="camp_img" type="hidden" value="{{ camp.7 }}">
-            <input id="reject" name="reject" type="hidden" value="rejected">
-          <button class="btn btn-success btn-approve float-right" style="border: none;" type="submit">Reject</button>
-          </form>
+  {% endif %}
+  {% for camp in campaigns %}
+  <div class="container mt-5" style="margin-bottom: 30px">
+    <div class="card" style="background-color: #dde1e5;">
+      <div class="row no-gutters">
+
+        <div class="col-md-4" style="margin-top: 10px;">
+          <img src="{{ camp.7 }}" class="card-img" alt="Image" style="height: 200px;width: 400px;;object-fit: cover;">
+        </div>
+
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title" style="color: black !important;">{{ camp.2 }}</h5>
+            <p class="card-text" style="color: black !important;">By: {{ camp.1 }}</p>
+            <p class="card-text" style="color: black !important;">Target: {{ camp.4 }}</p>
+
+            <div class="container">
+              <p class="card-description" style="color: black !important;">
+                {{ camp.3|slice:":30" }}
+
+              </p>
+              <div class="collapse" id="{{ camp.2 }}" style="color: black;">
+                {{ camp.3|slice:"30:" }}
+              </div>
+              <button class="btn btn-info" data-toggle="collapse" data-target="#{{ camp.2 }}" type="button">View
+                More</button>
+            </div>
+            <form method="post">
+              {% csrf_token %}
+              <input id="camp_img" name="camp_img" type="hidden" value="{{ camp.7 }}">
+              <button class="btn btn-success btn-approve float-right"
+                style="border:none;margin-left: 20px;margin-bottom: 20px;" type="submit">Approve</button>
+            </form>
+            <form method="post">
+              {% csrf_token %}
+              <input id="camp_img" name="camp_img" type="hidden" value="{{ camp.7 }}">
+              <input id="reject" name="reject" type="hidden" value="rejected">
+              <button class="btn btn-success btn-approve float-right" style="border: none;"
+                type="submit">Reject</button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-{% endfor %}
-<!-- Bootstrap JS and Popper.js -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  {% endfor %}
+  <!-- Bootstrap JS and Popper.js -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<script>
-  function toggleDescription() {
-    const description = document.querySelector('.card-description');
-    const fullDescription = document.querySelector('.full-description');
+  <script>
+    function toggleDescription() {
+      const description = document.querySelector('.card-description');
+      const fullDescription = document.querySelector('.full-description');
 
-    if (description.classList.contains('show-full-description')) {
-      // Close description
-      var a=description.innerHTML;
-      description.innerHTML=fullDescription.innerHTML;
-      fullDescription.innerHTML=a;
-    } else {
-      // Open description
-      var a=fullDescription.innerHTML;
-      fullDescription.innerHTML=description.innerHTML;
-      description.innerHTML=a;
+      if (description.classList.contains('show-full-description')) {
+        // Close description
+        var a = description.innerHTML;
+        description.innerHTML = fullDescription.innerHTML;
+        fullDescription.innerHTML = a;
+      } else {
+        // Open description
+        var a = fullDescription.innerHTML;
+        fullDescription.innerHTML = description.innerHTML;
+        description.innerHTML = a;
+      }
     }
-  }
-</script>
+  </script>
 
 </body>
+
 </html>
 
 {% else %}
